@@ -1,0 +1,26 @@
+<template>
+    <footer>
+      <span>富强</span>
+      <span>民主</span>
+      <span>文明</span>
+      <span>和谐</span>
+      <span>自由</span>
+      <span>平等</span>
+      <span>公正</span>
+      <span>法治</span>
+      <span>爱国</span>
+      <span>敬业</span>
+      <span>诚信</span>
+      <span>友善</span>
+      <div class="icp">
+        <span>© 2024</span><a href="https://bsgun.cn" target="_blank">梦爱吃鱼</a>
+        <a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备20017009号</a>
+        <button class="logo-btn">小提示</button>
+        <div class="logotitle">
+          <span>为避免性能问题，建议不要连续做图</span><br>
+          <span>建议经常<a href="/">刷新页面</a>优化性能</span><br>
+          <span class="highlight"><strong>重要提示：请确保您的浏览器和设备性能良好</strong></span>
+        </div>
+      </div>
+    </footer>
+  </template>
