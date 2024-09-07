@@ -53,21 +53,37 @@
       <label class="input-checkbox"><input type="checkbox" v-model="state.iconBackground" @change="drawSquareImage"><span>图标背景</span></label>
       <label class="input-checkbox"><input type="checkbox" v-model="state.iconBorder" @change="drawSquareImage"><span>图标边框</span></label>
     </div>
-    <button class="btn-save" @click="saveWebp">保存图片</button>
+    <div class="button-container">
+      <button class="btn" @click="saveWebp">保存图片</button>
+      <button class="btn" @click="uploadImageToBackend">获取外链</button>
+    </div>
   </div>
   <canvas id="canvasPreview" width="1000" height="500"></canvas>
+  <!-- 自定义弹窗 -->
+  <div class="custom-popup" :class="{ 'show': showPopup }">
+    <div class="popup-content">
+      <p v-if="isSuccess">{{ successMessage }}</p>
+      <p v-else>{{ errorMessage }}</p>
+      <a v-if="isSuccess" :href="uploadedImageUrl" target="_blank">{{ uploadedImageUrl }}</a>
+    </div>
+  </div>
 </main>
 </template>
 
 <script>
-import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize} from '../assets/script.js';
-
+import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
 export default {
   data() {
     return {
       state,
       iconName: '',
-      iconUrl: null
+      iconUrl: null,
+      externalLink: '',
+      showPopup: false,
+      uploadedImageUrl: '',
+      isSuccess: false,
+      successMessage: '',
+      errorMessage: ''
     };
   },
   mounted() {
@@ -95,10 +111,57 @@ export default {
             state.squareImageUrl = URL.createObjectURL(file);
             updatePreview('square', { target: { files: [file] } });
           })
-          .catch(error => console.error('Error fetching icon:', error));
+          .catch(error => {
+            console.error('加载图标时出错:', error);
+            this.showSuccessPopup('加载图标时出错: ' + error.message, false);
+          });
       }
     },
-    drawSquareImage
+    drawSquareImage,
+    uploadImageToBackend() {
+      const canvas = document.getElementById('canvasPreview');
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append('image', blob, 'Canvas-Ruom.webp');
+        const token = '9oDXyc1PJQKjXILNLY0Z6SckRTDqRDTp';
+        formData.append('token', token);
+        fetch('https://dev.ruom.top/api.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.result === 'success') {
+            this.uploadedImageUrl = data.url;
+            this.showSuccessPopup(data.url, true);
+          } else {
+            this.showSuccessPopup('图片上传失败: ' + data.message, false);
+          }
+        })
+        .catch(error => {
+          console.error('上传图片时出错:', error);
+          this.showSuccessPopup('图片上传失败: ' + error.message, false);
+        });
+      }, 'image/webp');
+    },
+    showSuccessPopup(message, isSuccess) {
+      this.isSuccess = isSuccess;
+      if (isSuccess) {
+        this.successMessage = '图片上传成功！链接已复制到剪切板。';
+        this.errorMessage = '';
+        this.uploadedImageUrl = message;
+      } else {
+        this.successMessage = '';
+        this.errorMessage = message;
+        this.uploadedImageUrl = '';
+      }
+      this.showPopup = true;
+      navigator.clipboard.writeText(message).then(() => {
+        setTimeout(() => {
+          this.showPopup = false;
+        }, 3000);
+      });
+    }
   }
 };
 </script>
