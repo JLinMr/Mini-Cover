@@ -13,7 +13,7 @@
   width: 0;
 }
 
-html, input, button {
+html, input {
   font-family: 'LXGW WenKai GB Screen', auto;
 }
 
@@ -30,7 +30,7 @@ html, input, button {
 }
 
 /* 应用渐入动画到主要内容 */
-body, .container, h1, .input-container, .btn, #canvasPreview, footer {
+body, .container, h1, .input-container, .btn-save, #canvasPreview, footer {
   animation: fadeIn .8s ease-in-out;
 }
 
@@ -266,7 +266,7 @@ input.input-icon {
   border-radius: 5px;
 }
 
-.btn,
+.btn-save,
 .file-input-label,
 .icon-link {
   background-color: #4CAF50;
@@ -282,23 +282,13 @@ input.input-icon {
 
 .btn-save:hover,
 .file-input-label:hover,
-.icon-link:hover,
-.btn:hover {
+.icon-link:hover {
   background-color: #009905;
 }
 
 #inputBgImage,
 #inputSquareImage {
   display: none;
-}
-
-.button-container {
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-  width: 100%;;
 }
 
 #canvasPreview {
@@ -330,7 +320,7 @@ footer span {
   margin: 0 5px;
 }
 
-.icp a:hover{
+.icp a:hover {
   color: #aaa;
 }
 
@@ -347,8 +337,7 @@ footer span {
   -webkit-appearance: none;
 }
 
-/* 弹窗通用样式 */
-.custom-popup, .tips-popup {
+.logotitle {
   opacity: 0;
   position: fixed;
   top: 0;
@@ -356,49 +345,23 @@ footer span {
   transform: translateX(-50%) translateY(-20px);
   width: 90%;
   max-width: 600px;
-  height: 100%;
-  max-height: 82px;
+  font-size: 16px;
   padding: 10px;
   margin: 10px auto;
   background-color: #fff;
   color: #333;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.5s ease-in-out;
-  z-index: 100;
+  transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+  z-index: -1;
 }
 
-.custom-popup.show, .tips-popup.show {
+.logo-btn:focus + .logotitle {
   opacity: 1;
   transform: translateX(-50%) translateY(0px);
-  visibility: visible;
+  z-index: 1;
 }
 
-.popup-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 100%; /* 使内容占满整个弹窗高度 */
-  overflow: hidden;
-}
-
-.popup-content p{
-  margin: 10px;
-}
-
-.popup-content a {
-  transition: all .5s;
-  color: #009905;
-  text-decoration: none;
-}
-
-.popup-content a:hover {
-  color: #222;
-}
-
-.highlight {
-  color: #ff0000;
+.logo-btn:focus + .logotitle .highlight {
+  color: #f45873;
 }
