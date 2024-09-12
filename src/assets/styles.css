@@ -9,12 +9,16 @@
   box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-  width: 0;
+:root {
+  --font-family: var(--vue-app-font-family);
 }
 
-html, input, button {
-  font-family: 'LXGW WenKai GB Screen', auto;
+* {
+  font-family: var(--font-family);
+}
+
+::-webkit-scrollbar {
+  width: 0;
 }
 
 /* 定义渐入动画 */
@@ -30,7 +34,8 @@ html, input, button {
 }
 
 /* 应用渐入动画到主要内容 */
-body, .container, h1, .input-container, .btn-save, #canvasPreview, footer {
+body, .container, h1, .input-container, #canvasPreview, footer {
+
   animation: fadeIn .8s ease-in-out;
 }
 
@@ -325,7 +330,7 @@ footer span {
 }
 
 .logo-btn {
-  margin: 0 12px;
+  margin: 0 5px;
   color: #f45873;
   font-size: 12px;
   font-weight: bold;
