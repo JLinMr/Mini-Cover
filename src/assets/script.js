@@ -16,7 +16,8 @@ export const state = {
     text: '梦爱吃鱼',
     bgBlur: 3,
     iconBackground: false,
-    iconBorder: false
+    iconBorder: false,
+    selectedFont: '默认全局'
 };
 
 export let canvas = null;
@@ -64,9 +65,22 @@ export function updatePreview(type, event) {
         bgBlur: updateBgBlur,
         iconColor: updateIconColor,
         iconBackground: drawSquareImage,
-        iconBorder: drawSquareImage
+        iconBorder: drawSquareImage,
+        font: updateFont,
+        text3D: updateText3D
     };
     updateFunctions[type](event);
+}
+
+export function updateText3D(event) {
+    state.text3D = event.target.checked;
+    drawText();
+}
+
+export function updateFont(event) {
+    state.selectedFont = event.target.value;
+    drawText();
+    drawWatermark();
 }
 
 export function updateBackgroundImage(event) {
@@ -269,10 +283,24 @@ function getHtmlFontStyles() {
 export function drawText() {
     textCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
     const { fontFamily } = getHtmlFontStyles();
-    textCtx.font = `600 ${state.textSize}px ${fontFamily}`;
+    const font = state.selectedFont ? `${state.selectedFont}, ${fontFamily}` : fontFamily;
+    textCtx.font = `600 ${state.textSize}px ${font}`;
     textCtx.fillStyle = state.textColor;
     textCtx.textAlign = 'center';
     textCtx.textBaseline = 'middle';
+
+    if (state.text3D) {
+        textCtx.shadowColor = 'rgba(0, 0, 0, .4)';
+        textCtx.shadowBlur = 5;
+        textCtx.shadowOffsetX = 5;
+        textCtx.shadowOffsetY = 5;
+    } else {
+        textCtx.shadowColor = 'transparent';
+        textCtx.shadowBlur = 0;
+        textCtx.shadowOffsetX = 0;
+        textCtx.shadowOffsetY = 0;
+    }
+
     textCtx.fillText(state.text, textCanvas.width / 2, textCanvas.height / 2);
     composeCanvases();
 }
@@ -280,7 +308,8 @@ export function drawText() {
 export function drawWatermark() {
     watermarkCtx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
     const { fontFamily } = getHtmlFontStyles();
-    watermarkCtx.font = `italic 14px ${fontFamily}`;
+    const font = state.selectedFont ? `${state.selectedFont}, ${fontFamily}` : fontFamily;
+    watermarkCtx.font = `italic 14px ${font}`;
     watermarkCtx.fillStyle = state.watermarkColor;
     watermarkCtx.textAlign = 'right';
     watermarkCtx.fillText(state.watermark, watermarkCanvas.width - 20, watermarkCanvas.height - 20);

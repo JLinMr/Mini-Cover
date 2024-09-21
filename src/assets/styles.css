@@ -79,6 +79,7 @@ body {
 input.input-icon {
   flex: 1;
 }
+
 .background-settings {
   display: flex;
   flex-direction: column;
@@ -89,6 +90,7 @@ input.input-icon {
 .background-blur {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .background-upload label,
@@ -104,21 +106,25 @@ input.input-icon {
 
 .color-group,
 .icon-settings .setting-item,
-.text-settings {
+.text-size-container,
+.font-selector{
   display: flex;
   flex-direction: row;
   gap: 5px;
   width: 100%;
+  white-space: nowrap;
+  align-items: center;
 }
 
 .color-group label,
 .icon-settings .setting-item label,
-.text-settings label {
+.text-size-container label {
   font-size: 16px;
   color: #333;
 }
 
-.icon-settings {
+.icon-settings,
+.text-settings {
   display: flex;
   gap: 10px;
 }
@@ -137,6 +143,7 @@ input.input-icon {
 }
 
 .radio-group input[type="radio"],
+.radio-group input[type="checkbox"],
 .input-checkbox input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -152,6 +159,7 @@ input.input-icon {
 }
 
 .radio-group input[type="radio"]::before,
+.radio-group input[type="checkbox"]::before,
 .input-checkbox input[type="checkbox"]::before {
   content: '';
   display: block;
@@ -167,11 +175,13 @@ input.input-icon {
 }
 
 .radio-group input[type="radio"]:checked::before,
+.radio-group input[type="checkbox"]:checked::before,
 .input-checkbox input[type="checkbox"]:checked::before {
   transform: translate(-50%, -50%) scale(1);
 }
 
 .radio-group input[type="radio"]:checked + span,
+.radio-group input[type="checkbox"]:checked + span,
 .input-checkbox input[type="checkbox"]:checked + span {
   color: #4CAF50;
 }
@@ -189,10 +199,12 @@ input.input-icon {
   font-size: 1em;
   background-color: #fff;
   border: 1px solid #ccc;
-  transition: border-color .5s;
+  transition: border-color .5s, box-shadow .5s;
   outline: none;
 }
 
+select:hover,
+select:focus,
 .input-file:hover,
 .input-text:hover,
 .input-color:hover,
@@ -200,6 +212,7 @@ input.input-icon {
 .input-icon:hover,
 .input-checkbox:hover  {
   border-color: #4CAF50;
+  box-shadow: 0 0 5px rgb(76, 175, 80, .6);
 }
 
 .input-range {
@@ -385,7 +398,7 @@ footer span {
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 100%; /* 使内容占满整个弹窗高度 */
+  height: 100%;
   overflow: hidden;
 }
 
@@ -405,4 +418,34 @@ footer span {
 
 .highlight {
   color: #ff0000;
+}
+
+select {
+  width: 100%;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+  outline: none;
+  transition: border-color .5s, box-shadow .5s;
+}
+
+option[value="Microsoft YaHei"] {
+  font-family: 'Microsoft YaHei', sans-serif;
+}
+
+option[value="yozai"] {
+  font-family: 'yozai', sans-serif;
+}
+
+option[value="寒蝉全圆体"] {
+  font-family: '寒蝉全圆体',sans-serif;
+}
+
+option[value="Douyin Sans"] {
+  font-family: 'Douyin Sans',sans-serif;
+}
+
+option[value="MaokenZhuyuanTi"] {
+  font-family: 'MaokenZhuyuanTi',sans-serif;
 }

@@ -14,26 +14,26 @@
         </div>
       </div>
       <div class="color-group">
-        <label for="inputBgColor">背景颜色:</label>
-        <input type="color" id="inputBgColor" class="input-color" v-model="state.bgColor" @input="updatePreview('bgColor', $event)">
-        <label for="inputTextColor">标题颜色:</label>
+        <label for="inputTextColor">标题颜色</label>
         <input type="color" id="inputTextColor" class="input-color" v-model="state.textColor" @input="updatePreview('textColor', $event)">
-        <label for="inputWatermarkColor">水印颜色:</label>
+        <label for="inputWatermarkColor">水印颜色</label>
         <input type="color" id="inputWatermarkColor" class="input-color" v-model="state.watermarkColor" @input="updatePreview('watermarkColor', $event)">
-        <label for="inputIconColor">边框背景:</label>
+        <label for="inputIconColor">边框背景</label>
         <input type="color" id="inputIconColor" class="input-color" v-model="state.iconColor" @input="updatePreview('iconColor', $event)">
       </div>
       <div class="background-blur">
-        <label for="inputBgBlur">背景模糊:</label>
+        <label for="inputBgBlur">背景模糊</label>
         <input type="range" id="inputBgBlur" class="input-range" min="0" max="8" v-model="state.bgBlur" @input="updatePreview('bgBlur', $event)">
+        <label for="inputBgColor">背景颜色</label>
+        <input type="color" id="inputBgColor" class="input-color" v-model="state.bgColor" @input="updatePreview('bgColor', $event)">
       </div>
       <div class="icon-settings">
         <div class="setting-item">
-          <label for="inputSquareSize">图标大小:</label>
+          <label for="inputSquareSize">图标大小</label>
           <input type="range" id="inputSquareSize" class="input-range" min="200" max="500" v-model="state.squareSize" @input="updatePreview('squareSize', $event)">
         </div>
         <div class="setting-item">
-          <label for="inputRotation">图标旋转:</label>
+          <label for="inputRotation">图标旋转</label>
           <input type="range" id="inputRotation" class="input-range" min="0" max="360" v-model="state.rotation" @input="updatePreview('rotation', $event)">
         </div>
       </div>
@@ -42,10 +42,24 @@
         <label><input type="radio" name="shadowPreset" value="light" @change="updateShadowPreset"><span>小阴影</span></label>
         <label><input type="radio" name="shadowPreset" value="medium" @change="updateShadowPreset"><span>中阴影</span></label>
         <label><input type="radio" name="shadowPreset" value="heavy" checked @change="updateShadowPreset"><span>大阴影</span></label>
+        <label><input type="checkbox" id="inputText3D" v-model="state.text3D" @change="updatePreview('text3D', $event)"><span>立体字</span></label>
       </div>
       <div class="text-settings">
-        <label for="inputTextSize">标题大小:</label>
-        <input type="range" id="inputTextSize" class="input-range" min="20" max="300" v-model="state.textSize" @input="updatePreview('textSize', $event)">
+        <div class="text-size-container">
+          <label for="inputTextSize">标题大小</label>
+          <input type="range" id="inputTextSize" class="input-range" min="100" max="300" v-model="state.textSize" @input="updatePreview('textSize', $event)">
+        </div>
+        <div class="font-selector">
+          <label for="inputFont">字体</label>
+          <select id="inputFont" v-model="state.selectedFont" @change="updatePreview('font', $event)">
+              <option selected>默认全局</option>
+              <option value="Microsoft YaHei">微软雅黑</option>
+              <option value="yozai">悠哉字体</option>
+              <option value="寒蝉全圆体">寒蝉全圆体</option>
+              <option value="Douyin Sans">抖音美好体</option>
+              <option value="MaokenZhuyuanTi">猫啃珠圆体</option>
+          </select>
+        </div>
       </div>
       <input type="text" id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题">
       <div class="watermark-group">
@@ -72,6 +86,7 @@
 
   <script>
   import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
+
   export default {
     data() {
       return {
@@ -88,9 +103,25 @@
       };
     },
     mounted() {
+      this.loadStyles();
       initialize();
     },
     methods: {
+      loadStyles() {
+        const styles = [
+          'https://chinese-fonts-cdn.deno.dev/packages/yozai/dist/Yozai-Regular/result.css',
+          'https://chinese-fonts-cdn.deno.dev/packages/hcqyt/dist/ChillRoundFRegular/result.css',
+          'https://chinese-fonts-cdn.deno.dev/packages/dymh/dist/DouyinSansBold/result.css',
+          'https://chinese-fonts-cdn.deno.dev/packages/mkzyt/dist/猫啃珠圆体/result.css'
+        ];
+
+        styles.forEach(url => {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = url;
+          document.head.appendChild(link);
+        });
+      },
       updateShadowPreset,
       updatePreview,
       saveWebp,
