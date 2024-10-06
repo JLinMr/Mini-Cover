@@ -249,7 +249,26 @@ export function drawSquareImage() {
             tempCtx.closePath();
             tempCtx.clip();
 
-            tempCtx.drawImage(squareImg, borderWidth, borderWidth, size, size);
+            // 计算图像的缩放比例
+            const imgAspectRatio = squareImg.width / squareImg.height;
+            const containerAspectRatio = size / size; // 因为容器是正方形，所以宽高比为1
+
+            let scaledWidth, scaledHeight;
+            if (imgAspectRatio > containerAspectRatio) {
+                // 图像比容器宽，按宽度缩放
+                scaledWidth = size;
+                scaledHeight = size / imgAspectRatio;
+            } else {
+                // 图像比容器高，按高度缩放
+                scaledWidth = size * imgAspectRatio;
+                scaledHeight = size;
+            }
+
+            // 计算图像在容器中的偏移量，使其居中
+            const offsetX = (size - scaledWidth) / 2;
+            const offsetY = (size - scaledHeight) / 2;
+
+            tempCtx.drawImage(squareImg, borderWidth + offsetX, borderWidth + offsetY, scaledWidth, scaledHeight);
             tempCtx.restore();
 
             squareCtx.save();
