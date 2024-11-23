@@ -99,7 +99,7 @@
         isSuccess: false,
         successMessage: '',
         errorMessage: '',
-        uploadApiUrl: process.env.VUE_APP_UPLOAD_API_URL
+        uploadApiUrl: import.meta.env.VITE_APP_UPLOAD_API_URL
       };
     },
     mounted() {
