@@ -42,7 +42,7 @@ Mini-Cover：简洁的在线生成封面网站，专为博客、短视频、社�
 # 安装依赖
 npm install
 # 预览
-npm run serve
+npm run dev
 # 构建
 npm run build
 ```
