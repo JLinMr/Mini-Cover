@@ -10,11 +10,11 @@
 }
 
 :root {
-  --font-family: var(--vue-app-font-family);
+  --vue-app-font-family: var(--font-family);
 }
 
 * {
-  font-family: var(--font-family);
+  font-family: var(--vue-app-font-family);
 }
 
 ::-webkit-scrollbar {

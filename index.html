@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title><%= process.env.VUE_APP_TITLE %></title>
-    <link rel="icon" href="<%= process.env.VUE_APP_FAVICON_URL %>">
-    <meta name="description" content="<%= process.env.VUE_APP_DESCRIPTION %>">
-    <meta name="keywords" content="<%= process.env.VUE_APP_KEYWORDS %>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>%VITE_APP_TITLE%</title>
+    <link rel="icon" href="%VITE_APP_FAVICON_URL%">
+    <meta name="description" content="%VITE_APP_DESCRIPTION%">
+    <meta name="keywords" content="%VITE_APP_KEYWORDS%">
     <!-- IE 淘汰 -->
     <script>
       if (false || (!!window.MSInputMethodContext && !!document.documentMode))
@@ -23,15 +22,12 @@
     </script>
     <!-- Umami 统计 -->
     <script defer src="https://um.ruom.top/script.js" data-website-id="17708376-4a42-47be-9554-8e7eb1675af9"></script>
-    <% if (process.env.VUE_APP_FONT_CSS_URL) { %>
     <!-- 字体 -->
-    <link rel="stylesheet" href="<%= process.env.VUE_APP_FONT_CSS_URL %>">
-    <% } %>
+    <link rel="stylesheet" href="%VITE_APP_FONT_CSS_URL%">
   </head>
   <body>
-    <!-- 主体内容 -->
     <div id="app"></div>
-    <!-- noscript -->
+    <script type="module" src="/src/main.js"></script>
     <noscript>
       <div style="text-align: center">请开启 JavaScript</div>
     </noscript>

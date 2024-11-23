@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       showTipsPopup: false,
-      icpNumber: process.env.VUE_APP_ICP_NUMBER
+      icpNumber: import.meta.env.VITE_APP_ICP_NUMBER
     };
   },
   methods: {
