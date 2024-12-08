@@ -52,12 +52,7 @@
         <div class="font-selector">
           <label for="inputFont">字体</label>
           <select id="inputFont" v-model="state.selectedFont" @change="updatePreview('font', $event)">
-              <option selected>默认全局</option>
-              <option value="Microsoft YaHei">微软雅黑</option>
-              <option value="yozai">悠哉字体</option>
-              <option value="寒蝉全圆体">寒蝉全圆体</option>
-              <option value="Douyin Sans">抖音美好体</option>
-              <option value="MaokenZhuyuanTi">猫啃珠圆体</option>
+            <option v-for="font in defaultConfig.fontOptions" :key="font.value" :value="font.value">{{ font.label }}</option>
           </select>
         </div>
       </div>
@@ -86,11 +81,13 @@
 
   <script>
   import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
+  import { defaultConfig } from '../config';
 
   export default {
     data() {
       return {
         state,
+        defaultConfig,
         iconName: '',
         iconUrl: null,
         externalLink: '',
@@ -108,14 +105,7 @@
     },
     methods: {
       loadStyles() {
-        const styles = [
-          'https://chinese-fonts-cdn.deno.dev/packages/yozai/dist/Yozai-Regular/result.css',
-          'https://chinese-fonts-cdn.deno.dev/packages/hcqyt/dist/ChillRoundFRegular/result.css',
-          'https://chinese-fonts-cdn.deno.dev/packages/dymh/dist/DouyinSansBold/result.css',
-          'https://chinese-fonts-cdn.deno.dev/packages/mkzyt/dist/猫啃珠圆体/result.css'
-        ];
-
-        styles.forEach(url => {
+        defaultConfig.fontStyles.forEach(url => {
           const link = document.createElement('link');
           link.rel = 'stylesheet';
           link.href = url;

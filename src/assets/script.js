@@ -1,3 +1,5 @@
+import { defaultConfig } from '../config';
+
 const loadedImages = new Map();
 export const state = {
     bgImageUrl: null,
@@ -10,14 +12,14 @@ export const state = {
     shadowBlur: 120,
     shadowOffsetX: 1,
     shadowOffsetY: 1,
-    watermark: "@梦爱吃鱼",
+    watermark: defaultConfig.watermark,
     textSize: 200,
     squareSize: 300,
-    text: '梦爱吃鱼',
+    text: defaultConfig.text,
     bgBlur: 3,
     iconBackground: false,
     iconBorder: false,
-    selectedFont: '默认全局'
+    selectedFont: defaultConfig.fontFamily
 };
 
 export let canvas = null;
