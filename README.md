@@ -1,55 +1,102 @@
-## Mini-Cover
+<p align="center">
+  <img src="public/favicon.svg" width="100" height="100" alt="Mini-Cover Logo">
+</p>
 
-Mini-Cover：简洁的在线生成封面网站，专为博客、短视频、社交媒体等生成个性化封面。
+<h1 align="center">Mini-Cover</h1>
 
-![](https://i1.wp.com/s2.loli.net/2024/08/25/9Vn2yqjA6Y5KgL3.png)
+<p align="center">优雅的在线封面生成工具</p>
 
-### Demo
+<p align="center">
+  <img src="https://img.shields.io/badge/Vue.js-3.5-4FC08D?logo=vue.js" alt="Vue">
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+</p>
+<p align="center">
+  <a href="https://vercel.com/new/clone?repository-url=https://github.com/JLinMr/Mini-Cover">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+  </a>
+  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/JLinMr/Mini-Cover">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
+  </a>
+</p>
+<p align="center">🎮 在线演示：
+  <a href="https://cover.ruom.top" target="_blank">
+  https://cover.ruom.top
+  </a>
+</p>
 
->由于 CDN 缓存原因，查看最新效果可能需要 `Ctrl` + `F5` 强制刷新浏览器缓存
+## 📖 简介
 
-- [预览](https://cover.ruom.top)
+Mini-Cover 是一个现代化的封面生成工具，专为博客、短视频、社交媒体设计。支持多种自定义选项，让你轻松创建个性化封面图片。
 
-### 使用
+## ✨ 特性
 
->如何使用图标库
+- 📱 响应式设计，完美支持移动端
+- 🎨 丰富的图标库，一键选用
+- 🖼️ 自定义背景图片，支持拖拽上传
+- ✍️ 灵活的标题编辑，多种字体可选
+- 💫 水印效果调整，实时预览
+- 🎯 简洁的操作界面，快速上手
 
-1. 点击图标库
-2. 选择图标
-3. 复制图标代码 (图)
-4. 上传背景
-5. 调整标题
-6. 调整水印
-7. 调整样式
+## ⚙️ 配置说明
 
-![](https://i.p-i.vip/29/20240913-66e3c75328434.png)
+### 环境配置
 
-## 设置
+网站基础内容通过修改 `.env` 文件自定义网站配置：
 
-> 修改标题，关键词，修改全局字体，修改ICP备案号，直接修改`.env`文件的配置项即可
+### 默认配置
 
-### 部署
+在 `src/config.js` 中可以修改默认文本和字体配置：
 
-* **安装** [node.js](https://nodejs.org/zh-cn/) **环境**
+```javascript
+export const defaultConfig = {
+    // 默认文本配置
+    text: '默认标题',       
+    watermark: '@水印文本', 
 
-  > node > 16.16.0
-  > npm > 8.15.0
+    // 字体配置
+    fontFamily: import.meta.env.VITE_APP_FONT_FAMILY,
+    
+    // 可用字体样式列表
+    fontStyles: [
+        'https://font-cdn.com/font1.css',
+        'https://font-cdn.com/font2.css',
+        // ...
+    ],
+    
+    // 字体选项
+    fontOptions: [
+        { value: 'default', label: '默认全局' },
+        { value: 'Microsoft YaHei', label: '微软雅黑' },
+        // ...
+    ]
+};
+```
 
-* 然后以 **管理员权限** 运行 `cmd` 终端，并 `cd` 到 项目根目录
-* 在 `终端` 中输入：
+## 🚀 快速开始
+
+### 环境准备
+
+- Node.js >= 16.16.0
+- NPM >= 8.15.0
+
+### 开发调试
 
 ```bash
+# 克隆项目
+git clone https://github.com/JLinMr/Mini-Cover.git
+
 # 安装依赖
 npm install
-# 预览
+
+# 启动服务
 npm run dev
-# 构建
+
+# 构建生产版本
 npm run build
 ```
-> 构建完成后，静态资源会在 **`dist` 目录** 中生成，可将 **`dist` 文件夹下的文件**上传至服务器，也可使用 `Vercel` 等托管平台一键导入并自动部署
 
-### Vercle部署
+构建产物在 `dist` 目录下，可以直接部署到任何静态资源服务器上。
 
->点击后自动部署并创建仓库
+## 📝 开源协议
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/JLinMr/Mini-Cover&repository-name=Mini-Cover)
+[MIT License](LICENSE)

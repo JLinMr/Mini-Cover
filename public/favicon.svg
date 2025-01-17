@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#34D399;stop-opacity:1"/><stop offset="100%" style="stop-color:#10B981;stop-opacity:1"/>
+</linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="1" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+</defs>
+<rect width="32" height="32" rx="6" fill="#065F46"/>
+<circle cx="16" cy="16" r="14" stroke="url(#grad)" stroke-width="1" opacity="0.2"/>
+<circle cx="16" cy="16" r="12" stroke="url(#grad)" stroke-width="1" opacity="0.1"/>
+<circle cx="6" cy="6" r="2" fill="url(#grad)" opacity="0.3"/>
+<circle cx="26" cy="26" r="2" fill="url(#grad)" opacity="0.3"/>
+<path d="M6 24V8C6 8 8.5 8 11 8C11 8 15.5 17.5 16 17.5C16.5 17.5 21 8 21 8C23.5 8 26 8 26 8V24" stroke="url(#grad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+<path d="M6 24C6 24 11 16 11 8M21 8C21 16 26 24 26 24" stroke="url(#grad)" stroke-width="1.5" stroke-linecap="round" opacity="0.3" filter="url(#glow)"/>
+<circle cx="16" cy="17" r="1.5" fill="url(#grad)" filter="url(#glow)"/>
+<circle cx="16" cy="17" r="1" fill="white" opacity="0.9"/>
+<circle cx="16" cy="17" r="2.5" fill="url(#grad)" opacity="0.1" filter="url(#glow)"/>
+<path d="M28 6L29 7L28 8L27 7L28 6Z" fill="#ffffff" opacity="0.6"/>
+<path d="M4 26L5 27L4 28L3 27L4 26Z" fill="#ffffff" opacity="0.6"/>
+<circle cx="24" cy="4" r="1" fill="#ffffff" opacity="0.4"/>
+<circle cx="8" cy="28" r="1" fill="#ffffff" opacity="0.4"/>
+</svg> 
