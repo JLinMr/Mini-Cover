@@ -67,7 +67,7 @@
         <button v-if="uploadApiUrl" class="btn" @click="uploadImageToBackend">获取外链</button>
       </div>
     </div>
-    <canvas id="canvasPreview" width="1000" height="500"></canvas>
+    <canvas id="canvasPreview" width="1000" height="500" @dragover.prevent @drop.prevent="handleCanvasDrop" class="preview-canvas"></canvas>
     <!-- 自定义弹窗 -->
     <div class="custom-popup" :class="{ 'show': showPopup }">
       <div class="popup-content">
@@ -181,7 +181,31 @@
             this.showPopup = false;
           }, 3000);
         });
-      }
+      },
+      handleCanvasDrop(event) {
+        const file = event.dataTransfer.files[0];
+        if (!file || !file.type.startsWith('image/')) return;
+        
+        const canvas = event.target;
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const centerRadius = 100;
+        
+        const distanceToCenter = Math.sqrt(
+          Math.pow(x - centerX, 2) + 
+          Math.pow(y - centerY, 2)
+        );
+        
+        if (distanceToCenter < centerRadius) {
+          this.updatePreview('square', { target: { files: [file] } });
+        } else {
+          this.updatePreview('bg', { target: { files: [file] } });
+        }
+      },
     }
   };
   </script>

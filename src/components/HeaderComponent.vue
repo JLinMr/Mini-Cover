@@ -25,17 +25,12 @@ export default {
 header {
     display: flex;
     justify-content: center;
-    padding: 1rem;
 }
 
 .title-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-h1 {
-    margin: 0;
 }
 
 .github-link {
