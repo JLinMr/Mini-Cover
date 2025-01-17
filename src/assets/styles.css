@@ -210,7 +210,13 @@ select:focus,
 .input-color:hover,
 .input-range:hover,
 .input-icon:hover,
-.input-checkbox:hover  {
+.input-checkbox:hover,
+.input-file:focus,
+.input-text:focus,
+.input-color:focus,
+.input-range:focus,
+.input-icon:focus,
+.input-checkbox:focus {
   border-color: #4CAF50;
   box-shadow: 0 0 5px rgb(76, 175, 80, .6);
 }
