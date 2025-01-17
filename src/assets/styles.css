@@ -34,7 +34,7 @@
 }
 
 /* 应用渐入动画到主要内容 */
-body, .container, h1, .input-container, #canvasPreview, footer {
+body, .container, .title-container, .input-container, #canvasPreview, footer {
   animation: fadeIn .8s ease-in-out;
 }
 
