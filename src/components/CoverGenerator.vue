@@ -64,39 +64,28 @@
       </div>
       <div class="button-container">
         <button class="btn" @click="saveWebp">保存图片</button>
-        <button v-if="uploadApiUrl" class="btn" @click="uploadImageToBackend">获取外链</button>
+        <ImageUploader canvas-id="canvasPreview" />
       </div>
     </div>
     <canvas id="canvasPreview" width="1000" height="500" @dragover.prevent @drop.prevent="handleCanvasDrop" class="preview-canvas"></canvas>
-    <!-- 自定义弹窗 -->
-    <div class="custom-popup" :class="{ 'show': showPopup }">
-      <div class="popup-content">
-        <p v-if="isSuccess">{{ successMessage }}</p>
-        <p v-else>{{ errorMessage }}</p>
-        <a v-if="isSuccess" :href="uploadedImageUrl" target="_blank">{{ uploadedImageUrl }}</a>
-      </div>
-    </div>
   </main>
   </template>
 
   <script>
   import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
   import { defaultConfig } from '../config';
+  import ImageUploader from './ImageUploader.vue';
 
   export default {
+    components: {
+      ImageUploader
+    },
     data() {
       return {
         state,
         defaultConfig,
         iconName: '',
         iconUrl: null,
-        externalLink: '',
-        showPopup: false,
-        uploadedImageUrl: '',
-        isSuccess: false,
-        successMessage: '',
-        errorMessage: '',
-        uploadApiUrl: import.meta.env.VITE_APP_UPLOAD_API_URL
       };
     },
     mounted() {
@@ -140,48 +129,6 @@
         }
       },
       drawSquareImage,
-      uploadImageToBackend() {
-        const canvas = document.getElementById('canvasPreview');
-        canvas.toBlob(blob => {
-          const formData = new FormData();
-          formData.append('image', blob, 'Canvas-Ruom.webp');
-          fetch(this.uploadApiUrl, {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.result === 'success') {
-              this.uploadedImageUrl = data.url;
-              this.showSuccessPopup(data.url, true);
-            } else {
-              this.showSuccessPopup('图片上传失败: ' + data.message, false);
-            }
-          })
-          .catch(error => {
-            console.error('上传图片时出错:', error);
-            this.showSuccessPopup('图片上传失败: ' + error.message, false);
-          });
-        }, 'image/webp');
-      },
-      showSuccessPopup(message, isSuccess) {
-        this.isSuccess = isSuccess;
-        if (isSuccess) {
-          this.successMessage = '图片上传成功！链接已复制到剪切板。';
-          this.errorMessage = '';
-          this.uploadedImageUrl = message;
-        } else {
-          this.successMessage = '';
-          this.errorMessage = message;
-          this.uploadedImageUrl = '';
-        }
-        this.showPopup = true;
-        navigator.clipboard.writeText(message).then(() => {
-          setTimeout(() => {
-            this.showPopup = false;
-          }, 3000);
-        });
-      },
       handleCanvasDrop(event) {
         const file = event.dataTransfer.files[0];
         if (!file || !file.type.startsWith('image/')) return;
