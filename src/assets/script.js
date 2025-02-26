@@ -1,4 +1,4 @@
-import { defaultConfig } from '../config';
+import {defaultConfig} from '../config';
 
 const loadedImages = new Map();
 export const state = {
@@ -321,8 +321,14 @@ export function drawText() {
         textCtx.shadowOffsetX = 0;
         textCtx.shadowOffsetY = 0;
     }
+    const textLines = state.text.split("\n");
+    const lineHeight = state.textSize;
+    const totalTextHeight = lineHeight * textLines.length;
+    const startY = (textCanvas.height - totalTextHeight) / 2 + lineHeight / 2; // 使整体居中
 
-    textCtx.fillText(state.text, textCanvas.width / 2, textCanvas.height / 2);
+    textLines.forEach((line, index) => {
+        textCtx.fillText(line, textCanvas.width / 2, startY + index * lineHeight);
+    });
     composeCanvases();
 }
 

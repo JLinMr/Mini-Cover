@@ -56,7 +56,7 @@
           </select>
         </div>
       </div>
-      <input type="text" id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题">
+      <textarea id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题"/>
       <div class="watermark-group">
         <input type="text" id="inputWatermark" class="input-text" @input="updatePreview('watermark', $event)" placeholder="输入水印">
         <label class="input-checkbox"><input type="checkbox" v-model="state.iconBackground" @change="drawSquareImage"><span>图标背景</span></label>
