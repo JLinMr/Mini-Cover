@@ -49,6 +49,10 @@
           <label for="inputTextSize">标题大小</label>
           <input type="range" id="inputTextSize" class="input-range" min="100" max="300" v-model="state.textSize" @input="updatePreview('textSize', $event)">
         </div>
+        <div class="text-line-height-container">
+          <label for="inputTextLineHeight">标题行高</label>
+          <input type="range" id="inputTextLineHeight" class="input-range" min="0.1" max="2" step="0.1" v-model="state.textLineHeight" @input="updatePreview('textLineHeight', $event)">
+        </div>
         <div class="font-selector">
           <label for="inputFont">字体</label>
           <select id="inputFont" v-model="state.selectedFont" @change="updatePreview('font', $event)">
@@ -56,7 +60,7 @@
           </select>
         </div>
       </div>
-      <input type="text" id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题">
+      <textarea id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题"/>
       <div class="watermark-group">
         <input type="text" id="inputWatermark" class="input-text" @input="updatePreview('watermark', $event)" placeholder="输入水印">
         <label class="input-checkbox"><input type="checkbox" v-model="state.iconBackground" @change="drawSquareImage"><span>图标背景</span></label>

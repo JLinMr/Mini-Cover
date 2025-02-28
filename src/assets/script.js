@@ -1,4 +1,4 @@
-import { defaultConfig } from '../config';
+import {defaultConfig} from '../config';
 
 const loadedImages = new Map();
 export const state = {
@@ -14,6 +14,7 @@ export const state = {
     shadowOffsetY: 1,
     watermark: defaultConfig.watermark,
     textSize: 200,
+    textLineHeight: 1,
     squareSize: 300,
     text: defaultConfig.text,
     bgBlur: 3,
@@ -63,6 +64,7 @@ export function updatePreview(type, event) {
         text: updateText,
         watermark: updateWatermark,
         textSize: updateTextSize,
+        textLineHeight: updateTextLineHeight,
         squareSize: updateSquareSize,
         bgBlur: updateBgBlur,
         iconColor: updateIconColor,
@@ -138,6 +140,11 @@ export function updateWatermark(event) {
 
 export function updateTextSize(event) {
     state.textSize = event.target.value;
+    drawText();
+}
+
+export function updateTextLineHeight(event) {
+    state.textLineHeight = event.target.value;
     drawText();
 }
 
@@ -321,8 +328,14 @@ export function drawText() {
         textCtx.shadowOffsetX = 0;
         textCtx.shadowOffsetY = 0;
     }
+    const textLines = state.text.split("\n");
+    const lineHeight = state.textSize * state.textLineHeight;
+    const totalTextHeight = lineHeight * textLines.length;
+    const startY = (textCanvas.height - totalTextHeight) / 2 + lineHeight / 2; // 使整体居中
 
-    textCtx.fillText(state.text, textCanvas.width / 2, textCanvas.height / 2);
+    textLines.forEach((line, index) => {
+        textCtx.fillText(line, textCanvas.width / 2, startY + index * lineHeight);
+    });
     composeCanvases();
 }
 
