@@ -1,26 +1,32 @@
 import { defaultConfig } from '../config';
+import { reactive } from 'vue';
 
 const loadedImages = new Map();
-export const state = {
+export const state = reactive({
     bgImageUrl: null,
     squareImageUrl: null,
     bgColor: '#ffffff',
     textColor: '#eeeeee',
     watermarkColor: '#dddddd',
-    iconColor: '#ffffff',
+    iconColor: '#eeeeee',
     rotation: 0,
+    shadowColor: '#646464',
     shadowBlur: 120,
     shadowOffsetX: 1,
     shadowOffsetY: 1,
+    shadowStrength: 60,
     watermark: defaultConfig.watermark,
     textSize: 200,
+    lineHeight: 1,
+    text3D: 0,
     squareSize: 300,
     text: defaultConfig.text,
     bgBlur: 3,
-    iconBackground: false,
-    iconBorder: false,
-    selectedFont: defaultConfig.fontFamily
-};
+    iconBgSize: 0,
+    selectedFont: defaultConfig.fontFamily,
+    isFontMenuOpen: false,
+    hasMultipleLines: false
+});
 
 export let canvas = null;
 export let ctx = null;
@@ -37,21 +43,6 @@ export const { canvas: textCanvas, ctx: textCtx } = createCanvas(1000, 500);
 export const { canvas: watermarkCanvas, ctx: watermarkCtx } = createCanvas(1000, 500);
 export const { canvas: squareCanvas, ctx: squareCtx } = createCanvas(1000, 500);
 
-export function updateShadowPreset() {
-    const preset = document.querySelector('input[name="shadowPreset"]:checked').value;
-    const presets = {
-        none: { blur: 0, offsetX: 0, offsetY: 0 },
-        light: { blur: 60, offsetX: 1, offsetY: 1 },
-        medium: { blur: 90, offsetX: 1, offsetY: 1 },
-        heavy: { blur: 120, offsetX: 1, offsetY: 1 }
-    };
-    const { blur, offsetX, offsetY } = presets[preset];
-    state.shadowBlur = blur;
-    state.shadowOffsetX = offsetX;
-    state.shadowOffsetY = offsetY;
-    drawSquareImage();
-}
-
 export function updatePreview(type, event) {
     const updateFunctions = {
         bg: updateBackgroundImage,
@@ -66,16 +57,18 @@ export function updatePreview(type, event) {
         squareSize: updateSquareSize,
         bgBlur: updateBgBlur,
         iconColor: updateIconColor,
-        iconBackground: drawSquareImage,
-        iconBorder: drawSquareImage,
+        iconBgSize: updateIconBgSize,
         font: updateFont,
-        text3D: updateText3D
+        lineHeight: drawText,
+        text3D: updateText3D,
+        shadowColor: updateShadowColor,
+        shadowStrength: updateShadowStrength
     };
     updateFunctions[type](event);
 }
 
 export function updateText3D(event) {
-    state.text3D = event.target.checked;
+    state.text3D = event.target.value;
     drawText();
 }
 
@@ -127,7 +120,8 @@ export function updateRotation(event) {
 }
 
 export function updateText(event) {
-    state.text = event.target.value;
+    state.text = event.target.value || defaultConfig.text;
+    state.hasMultipleLines = state.text.includes('\n');
     drawText();
 }
 
@@ -152,10 +146,26 @@ export function updateBgBlur(event) {
 }
 
 export function updateIconColor(event) {
-    if (state.iconBackground || state.iconBorder) {
-        state.iconColor = event.target.value;
-        drawSquareImage();
-    }
+    state.iconColor = event.target.value;
+    drawSquareImage();
+}
+
+export function updateIconBgSize(event) {
+    state.iconBgSize = Number(event.target.value);
+    drawSquareImage();
+}
+
+export function updateShadowColor(event) {
+    state.shadowColor = event.target.value;
+    drawSquareImage();
+}
+
+export function updateShadowStrength(event) {
+    const strength = state.shadowStrength;
+    state.shadowBlur = strength * 2;
+    state.shadowOffsetX = 0;
+    state.shadowOffsetY = 0;
+    drawSquareImage();
 }
 
 function loadImage(file, callback) {
@@ -215,30 +225,41 @@ export function drawSquareImage() {
             const tempCtx = tempCanvas.getContext('2d');
 
             // 绘制背景
-            if (state.iconBackground) {
+            if (state.iconBgSize > 0) {
+                const bgPadding = state.iconBgSize;
                 tempCtx.fillStyle = state.iconColor;
                 tempCtx.beginPath();
-                tempCtx.moveTo(radius + borderWidth, borderWidth);
-                tempCtx.arcTo(totalSize - borderWidth, borderWidth, totalSize - borderWidth, radius + borderWidth, radius);
-                tempCtx.arcTo(totalSize - borderWidth, totalSize - borderWidth, totalSize - radius - borderWidth, totalSize - borderWidth, radius);
-                tempCtx.arcTo(borderWidth, totalSize - borderWidth, borderWidth, totalSize - radius - borderWidth, radius);
-                tempCtx.arcTo(borderWidth, borderWidth, radius + borderWidth, borderWidth, radius);
+                tempCtx.moveTo(radius + borderWidth - bgPadding, borderWidth - bgPadding);
+                tempCtx.arcTo(
+                    totalSize - borderWidth + bgPadding, 
+                    borderWidth - bgPadding, 
+                    totalSize - borderWidth + bgPadding, 
+                    radius + borderWidth - bgPadding, 
+                    radius
+                );
+                tempCtx.arcTo(
+                    totalSize - borderWidth + bgPadding, 
+                    totalSize - borderWidth + bgPadding, 
+                    totalSize - radius - borderWidth + bgPadding, 
+                    totalSize - borderWidth + bgPadding, 
+                    radius
+                );
+                tempCtx.arcTo(
+                    borderWidth - bgPadding, 
+                    totalSize - borderWidth + bgPadding, 
+                    borderWidth - bgPadding, 
+                    totalSize - radius - borderWidth + bgPadding, 
+                    radius
+                );
+                tempCtx.arcTo(
+                    borderWidth - bgPadding, 
+                    borderWidth - bgPadding, 
+                    radius + borderWidth - bgPadding, 
+                    borderWidth - bgPadding, 
+                    radius
+                );
                 tempCtx.closePath();
                 tempCtx.fill();
-            }
-
-            // 绘制边框
-            if (state.iconBorder) {
-                tempCtx.strokeStyle = state.iconColor;
-                tempCtx.lineWidth = borderWidth;
-                tempCtx.beginPath();
-                tempCtx.moveTo(radius + borderWidth, borderWidth);
-                tempCtx.arcTo(totalSize - borderWidth, borderWidth, totalSize - borderWidth, radius + borderWidth, radius);
-                tempCtx.arcTo(totalSize - borderWidth, totalSize - borderWidth, totalSize - radius - borderWidth, totalSize - borderWidth, radius);
-                tempCtx.arcTo(borderWidth, totalSize - borderWidth, borderWidth, totalSize - radius - borderWidth, radius);
-                tempCtx.arcTo(borderWidth, borderWidth, radius + borderWidth, borderWidth, radius);
-                tempCtx.closePath();
-                tempCtx.stroke();
             }
 
             tempCtx.save();
@@ -274,7 +295,7 @@ export function drawSquareImage() {
             tempCtx.restore();
 
             squareCtx.save();
-            squareCtx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            squareCtx.shadowColor = state.shadowColor;
             squareCtx.shadowBlur = state.shadowBlur;
             squareCtx.shadowOffsetX = state.shadowOffsetX;
             squareCtx.shadowOffsetY = state.shadowOffsetY;
@@ -310,11 +331,11 @@ export function drawText() {
     textCtx.textAlign = 'center';
     textCtx.textBaseline = 'middle';
 
-    if (state.text3D) {
+    if (state.text3D > 0) {
         textCtx.shadowColor = 'rgba(0, 0, 0, .4)';
-        textCtx.shadowBlur = 5;
-        textCtx.shadowOffsetX = 5;
-        textCtx.shadowOffsetY = 5;
+        textCtx.shadowBlur = state.text3D * 0.5;
+        textCtx.shadowOffsetX = state.text3D;
+        textCtx.shadowOffsetY = state.text3D;
     } else {
         textCtx.shadowColor = 'transparent';
         textCtx.shadowBlur = 0;
@@ -322,7 +343,17 @@ export function drawText() {
         textCtx.shadowOffsetY = 0;
     }
 
-    textCtx.fillText(state.text, textCanvas.width / 2, textCanvas.height / 2);
+    // 处理多行文本
+    const lines = state.text.split('\n');
+    const lineHeight = state.textSize * state.lineHeight;
+    const totalHeight = lineHeight * lines.length;
+    const startY = (textCanvas.height - totalHeight) / 2 + lineHeight / 2;
+
+    lines.forEach((line, index) => {
+        const y = startY + index * lineHeight;
+        textCtx.fillText(line, textCanvas.width / 2, y);
+    });
+
     composeCanvases();
 }
 

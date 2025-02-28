@@ -1,7 +1,9 @@
 <template>
-    <HeaderComponent />
-      <CoverGenerator />
+  <div class="min-h-screen flex flex-col">
+    <HeaderComponent class="py-4" />
+    <CoverGenerator class="flex-1" />
     <FooterComponent />
+  </div>
 </template>
 
 <script>
