@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply select-none box-border;
+  }
+  
+  body {
+    background-color: #f0f0f0;
+  }
+} 
+
+:root {
+  --vue-app-font-family: var(--font-family);
+}
+
+* {
+  font-family: var(--vue-app-font-family);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+/* 滑块样式 */
+input[type="range"] {
+  @apply h-6 bg-gray-200 rounded-full appearance-none cursor-pointer;
+  border: 1px solid #ccc
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply appearance-none w-[22px] h-[22px] bg-green-600 rounded-full cursor-pointer;
+  margin-top: -5px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  @apply h-3 rounded-full bg-gray-200;
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply w-[22px] h-[22px] bg-green-600 rounded-full cursor-pointer border-none;
+}
+
+input[type="range"]::-moz-range-track {
+  @apply h-3 rounded-full bg-gray-200;
+}
+
+/* 颜色选择器样式 */
+input[type="color"] {
+  @apply shadow-sm h-5 border-none rounded cursor-pointer;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+input[type="color"]:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  @apply p-0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  @apply border-none rounded;
+}
+
+/* 滚动条样式 */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}

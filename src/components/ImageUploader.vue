@@ -1,14 +1,24 @@
 <template>
-    <button v-if="uploadApiUrl" class="btn" @click="uploadImage">获取外链</button>
-    
-    <!-- 上传弹窗 -->
-    <div class="custom-popup" :class="{ 'show': showPopup }">
-      <div class="popup-content">
-        <p v-if="isSuccess">{{ successMessage }}</p>
-        <p v-else>{{ errorMessage }}</p>
-        <a v-if="isSuccess" :href="uploadedImageUrl" target="_blank">{{ uploadedImageUrl }}</a>
-      </div>
+  <button v-if="uploadApiUrl" 
+          @click="uploadImage"
+          class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+    获取外链
+  </button>
+  
+  <!-- 上传弹窗 -->
+  <div class="fixed top-0 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[600px] bg-white rounded-lg shadow-lg transition-all duration-300"
+       :class="[showPopup ? 'opacity-100 visible translate-y-3' : 'opacity-0 invisible translate-y-0']">
+    <div class="flex flex-col items-center justify-center p-4 text-center">
+      <p v-if="isSuccess">{{ successMessage }}</p>
+      <p v-else class="text-red-500">{{ errorMessage }}</p>
+      <a v-if="isSuccess" 
+         :href="uploadedImageUrl" 
+         target="_blank"
+         class="text-green-600 hover:text-gray-800 transition-colors">
+        {{ uploadedImageUrl }}
+      </a>
     </div>
+  </div>
 </template>
 
 <script>

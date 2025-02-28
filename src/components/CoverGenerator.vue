@@ -1,162 +1,428 @@
 <template>
-  <main class="container">
-    <div class="input-container">
-      <div class="icon-selector">
-        <input type="text" class="input-icon" v-model="iconName" placeholder="输入图标名称，例如 logos:chrome" @input="loadIcon" />
-        <a href="https://yesicon.app/" target="_blank" class="icon-link">图标库</a>
+  <main class="container mx-auto max-w-[1600px] p-4 flex flex-col lg:flex-row lg:flex-wrap justify-center items-center gap-5">
+    <!-- 控制面板 -->
+    <div class="w-full lg:flex-1 flex flex-col p-4 bg-white rounded-lg shadow-md">
+      <!-- 图标选择器 -->
+      <div class="flex gap-2 items-center mb-3">
+        <input 
+          type="text" 
+          v-model="iconName"
+          @input="loadIcon"
+          placeholder="输入图标名称，例如 logos:chrome"
+          class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all duration-300 hover:border-green-500 text-sm"
+        />
+        <a 
+          href="https://yesicon.app/" 
+          target="_blank"
+          class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm whitespace-nowrap"
+        >图标库</a>
       </div>
-      <div class="background-settings">
-        <div class="background-upload">
-          <label for="inputBgImage" class="file-input-label">选择背景图片</label>
-          <input type="file" id="inputBgImage" class="input-file" accept="image/*" @change="updatePreview('bg', $event)">
-          <label for="inputSquareImage" class="file-input-label">选择图标图片</label>
-          <input type="file" id="inputSquareImage" class="input-file" accept="image/*" @change="updatePreview('square', $event)">
+
+      <!-- 背景设置 -->
+      <div class="flex gap-2 mb-3">
+        <label 
+          for="inputBgImage" 
+          class="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer text-center text-sm"
+        >上传背景图片</label>
+        <input type="file" id="inputBgImage" accept="image/*" @change="updatePreview('bg', $event)" class="hidden">
+        <label 
+          for="inputSquareImage" 
+          class="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer text-center text-sm"
+        >上传图标图片</label>
+        <input type="file" id="inputSquareImage" accept="image/*" @change="updatePreview('square', $event)" class="hidden">
+        <a 
+          href="https://icon.ruom.top" 
+          target="_blank"
+          class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm whitespace-nowrap"
+        >图标下载站</a>
+      </div>
+
+      <!-- 颜色设置 -->
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div class="flex items-center gap-2">
+          <label class="whitespace-nowrap" for="inputTextColor">标题颜色</label>
+          <input 
+            type="color" 
+            id="inputTextColor"
+            v-model="state.textColor"
+            @input="updatePreview('textColor', $event)"
+            class="w-full h-6 rounded cursor-pointer"
+          >
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="whitespace-nowrap" for="inputWatermarkColor">水印颜色</label>
+          <input 
+            type="color"
+            id="inputWatermarkColor"
+            v-model="state.watermarkColor"
+            @input="updatePreview('watermarkColor', $event)"
+            class="w-full h-6 rounded cursor-pointer"
+          >
         </div>
       </div>
-      <div class="color-group">
-        <label for="inputTextColor">标题颜色</label>
-        <input type="color" id="inputTextColor" class="input-color" v-model="state.textColor" @input="updatePreview('textColor', $event)">
-        <label for="inputWatermarkColor">水印颜色</label>
-        <input type="color" id="inputWatermarkColor" class="input-color" v-model="state.watermarkColor" @input="updatePreview('watermarkColor', $event)">
-        <label for="inputIconColor">边框背景</label>
-        <input type="color" id="inputIconColor" class="input-color" v-model="state.iconColor" @input="updatePreview('iconColor', $event)">
-      </div>
-      <div class="background-blur">
-        <label for="inputBgBlur">背景模糊</label>
-        <input type="range" id="inputBgBlur" class="input-range" min="0" max="8" v-model="state.bgBlur" @input="updatePreview('bgBlur', $event)">
-        <label for="inputBgColor">背景颜色</label>
-        <input type="color" id="inputBgColor" class="input-color" v-model="state.bgColor" @input="updatePreview('bgColor', $event)">
-      </div>
-      <div class="icon-settings">
-        <div class="setting-item">
-          <label for="inputSquareSize">图标大小</label>
-          <input type="range" id="inputSquareSize" class="input-range" min="200" max="500" v-model="state.squareSize" @input="updatePreview('squareSize', $event)">
+
+      <!-- 背景模糊设置 -->
+      <div class="flex items-center gap-4 mb-3">
+        <div class="flex-[6] flex items-center gap-2">
+          <label class="whitespace-nowrap" for="inputBgBlur">背景模糊</label>
+          <input 
+            type="range"
+            id="inputBgBlur"
+            min="0"
+            max="20"
+            v-model="state.bgBlur"
+            @input="updatePreview('bgBlur', $event)"
+            class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
         </div>
-        <div class="setting-item">
-          <label for="inputRotation">图标旋转</label>
-          <input type="range" id="inputRotation" class="input-range" min="0" max="360" v-model="state.rotation" @input="updatePreview('rotation', $event)">
-        </div>
-      </div>
-      <div class="radio-group">
-        <label><input type="radio" name="shadowPreset" value="none" @change="updateShadowPreset"><span>无阴影</span></label>
-        <label><input type="radio" name="shadowPreset" value="light" @change="updateShadowPreset"><span>小阴影</span></label>
-        <label><input type="radio" name="shadowPreset" value="medium" @change="updateShadowPreset"><span>中阴影</span></label>
-        <label><input type="radio" name="shadowPreset" value="heavy" checked @change="updateShadowPreset"><span>大阴影</span></label>
-        <label><input type="checkbox" id="inputText3D" v-model="state.text3D" @change="updatePreview('text3D', $event)"><span>立体字</span></label>
-      </div>
-      <div class="text-settings">
-        <div class="text-size-container">
-          <label for="inputTextSize">标题大小</label>
-          <input type="range" id="inputTextSize" class="input-range" min="100" max="300" v-model="state.textSize" @input="updatePreview('textSize', $event)">
-        </div>
-        <div class="text-line-height-container">
-          <label for="inputTextLineHeight">标题行高</label>
-          <input type="range" id="inputTextLineHeight" class="input-range" min="0.1" max="2" step="0.1" v-model="state.textLineHeight" @input="updatePreview('textLineHeight', $event)">
-        </div>
-        <div class="font-selector">
-          <label for="inputFont">字体</label>
-          <select id="inputFont" v-model="state.selectedFont" @change="updatePreview('font', $event)">
-            <option v-for="font in defaultConfig.fontOptions" :key="font.value" :value="font.value">{{ font.label }}</option>
-          </select>
+        <div class="flex-[4] flex items-center gap-2">
+          <label class="whitespace-nowrap" for="inputBgColor">背景颜色</label>
+          <input 
+            type="color"
+            id="inputBgColor"
+            v-model="state.bgColor"
+            @input="updatePreview('bgColor', $event)"
+            class="w-full h-6 rounded cursor-pointer"
+          >
         </div>
       </div>
-      <textarea id="inputText" class="input-text" @input="updatePreview('text', $event)" placeholder="输入标题"/>
-      <div class="watermark-group">
-        <input type="text" id="inputWatermark" class="input-text" @input="updatePreview('watermark', $event)" placeholder="输入水印">
-        <label class="input-checkbox"><input type="checkbox" v-model="state.iconBackground" @change="drawSquareImage"><span>图标背景</span></label>
-        <label class="input-checkbox"><input type="checkbox" v-model="state.iconBorder" @change="drawSquareImage"><span>图标边框</span></label>
+
+      <!-- 图标和阴影设置 -->
+      <div 
+        class="flex flex-col gap-3 overflow-hidden transition-all duration-300 ease-out"
+        :class="state.squareImageUrl ? 'mb-3 max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
+      >
+        <!-- 图标控制 -->
+        <div class="flex gap-4">
+          <div class="flex-1 flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputSquareSize">图标大小</label>
+            <input 
+              type="range"
+              id="inputSquareSize"
+              min="200"
+              max="500"
+              v-model="state.squareSize"
+              @input="updatePreview('squareSize', $event)"
+              class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            >
+          </div>
+          <div class="flex-1 flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputRotation">图标旋转</label>
+            <input 
+              type="range"
+              id="inputRotation"
+              min="0"
+              max="360"
+              v-model="state.rotation"
+              @input="updatePreview('rotation', $event)"
+              class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            >
+          </div>
+        </div>
+
+        <!-- 阴影控制 -->
+        <div class="flex gap-4">
+          <div class="flex-[6] flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputShadowStrength">图标阴影大小</label>
+            <input 
+              type="range"
+              id="inputShadowStrength"
+              min="0"
+              max="100"
+              v-model.number="state.shadowStrength"
+              @input="updatePreview('shadowStrength', $event)"
+              class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            >
+          </div>
+          <div class="flex-[4] flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputShadowColor">图标阴影颜色</label>
+            <input 
+              type="color"
+              id="inputShadowColor"
+              :value="state.shadowColor.startsWith('rgba') ? '#000000' : state.shadowColor"
+              @input="updatePreview('shadowColor', $event)"
+              class="w-full h-6 rounded cursor-pointer"
+            >
+          </div>
+        </div>
+
+        <!-- 图标背景控制 -->
+        <div class="flex gap-4">
+          <div class="flex-[6] flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputIconBgSize">图标背景大小</label>
+            <input 
+              type="range"
+              id="inputIconBgSize"
+              min="0"
+              max="20"
+              v-model="state.iconBgSize"
+              @input="updatePreview('iconBgSize', $event)"
+              class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            >
+          </div>
+          <div class="flex-[4] flex items-center gap-2">
+            <label class="whitespace-nowrap" for="inputIconColor">图标背景颜色</label>
+            <input 
+              type="color"
+              id="inputIconColor"
+              v-model="state.iconColor"
+              @input="updatePreview('iconColor', $event)"
+              class="w-full h-6 rounded cursor-pointer"
+            >
+          </div>
+        </div>
       </div>
-      <div class="button-container">
-        <button class="btn" @click="saveWebp">保存图片</button>
+
+      <!-- 文本设置 -->
+      <div class="flex gap-4 mb-3">
+        <div class="flex-1 flex items-center gap-2">
+          <label class="whitespace-nowrap" for="inputTextSize">标题大小</label>
+          <input 
+            type="range"
+            id="inputTextSize"
+            min="100"
+            max="300"
+            v-model="state.textSize"
+            @input="updatePreview('textSize', $event)"
+            class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
+        </div>
+        <div class="flex-1 flex items-center gap-2">
+          <label class="whitespace-nowrap">字体</label>
+          <div class="relative flex-1" @click.stop>
+            <button
+              @click="state.isFontMenuOpen = !state.isFontMenuOpen"
+              class="w-full px-2 py-1 text-sm border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all duration-300 hover:border-green-500 flex items-center"
+              :style="{ fontFamily: state.selectedFont }"
+            >
+              <span class="flex-1 text-center">{{ defaultConfig.fontOptions.find(f => f.value === state.selectedFont)?.label }}</span>
+              <svg 
+                class="w-3.5 h-3.5 text-gray-500 transition-transform shrink-0"
+                :class="{ 'rotate-180': state.isFontMenuOpen }"
+                viewBox="0 0 24 24"
+              >
+                <path stroke="currentColor" stroke-width="2" d="M19 9l-7 7-7-7" fill="none"/>
+              </svg>
+            </button>
+            
+            <div
+              class="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto py-1 transform transition-all duration-200 ease-out origin-top"
+              :class="state.isFontMenuOpen ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95'"
+            >
+              <div
+                v-for="font in defaultConfig.fontOptions"
+                :key="font.value"
+                @click="selectFont(font.value)"
+                class="px-3 py-1.5 text-sm hover:bg-green-50 cursor-pointer"
+                :class="{ 'text-green-600': state.selectedFont === font.value }"
+              >
+                <span :style="{ fontFamily: font.value }" class="block text-center">{{ font.label }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 行高和立体效果设置 -->
+      <div class="flex mb-3">
+        <div 
+          class="flex items-center gap-2 overflow-hidden transition-all duration-300 ease-out"
+          :class="state.hasMultipleLines ? 'max-w-[300px] opacity-100 mr-4' : 'max-w-0 opacity-0 mr-0'"
+        >
+          <label class="whitespace-nowrap" for="inputLineHeight">标题行高</label>
+          <input 
+            type="range"
+            id="inputLineHeight"
+            min="0.5"
+            max="2"
+            step="0.1"
+            v-model.number="state.lineHeight"
+            @input="updatePreview('lineHeight', $event)"
+            class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
+        </div>
+        <div class="flex-1 flex items-center gap-2">
+          <label class="whitespace-nowrap" for="input3D">立体字</label>
+          <input 
+            type="range"
+            id="input3D"
+            min="0"
+            max="10"
+            step="1"
+            v-model.number="state.text3D"
+            @input="updatePreview('text3D', $event)"
+            class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          >
+        </div>
+      </div>
+
+      <!-- 标题输入 -->
+      <textarea 
+        id="inputText"
+        :value="''"
+        @input="updatePreview('text', $event)"
+        placeholder="输入标题"
+        rows="2"
+        class="w-full min-h-[60px] px-3 py-2 border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all duration-300 hover:border-green-500 resize-y mb-3"
+      ></textarea>
+
+      <!-- 水印设置 -->
+      <div class="flex items-center gap-4 mb-3">
+        <input 
+          type="text"
+          id="inputWatermark"
+          @input="updatePreview('watermark', $event)"
+          placeholder="输入水印"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all duration-300 hover:border-green-500"
+        >
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="flex gap-4">
+        <button 
+          @click="saveWebp"
+          class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+        >
+          保存图片
+        </button>
         <ImageUploader canvas-id="canvasPreview" />
+        <button 
+          @click="openSettings"
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          title="设置"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </button>
       </div>
     </div>
-    <canvas id="canvasPreview" width="1000" height="500" @dragover.prevent @drop.prevent="handleCanvasDrop" class="preview-canvas"></canvas>
+
+    <!-- 画布预览 -->
+    <div class="w-full lg:flex-[2] overflow-hidden">
+      <canvas 
+        id="canvasPreview" 
+        width="1000" 
+        height="500" 
+        @dragover.prevent 
+        @drop.prevent="handleCanvasDrop" 
+        class="w-full h-auto rounded-lg shadow-md"
+      ></canvas>
+    </div>
+
+    <!-- 设置模态框 -->
+    <SettingsModal
+      v-model="showSettings"
+    />
   </main>
-  </template>
+</template>
 
-  <script>
-  import { state, updateShadowPreset, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
-  import { defaultConfig } from '../config';
-  import ImageUploader from './ImageUploader.vue';
+<script>
+import { state, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
+import { defaultConfig } from '../config';
+import ImageUploader from './ImageUploader.vue';
+import SettingsModal from './SettingsModal.vue';
 
-  export default {
-    components: {
-      ImageUploader
+export default {
+  components: {
+    ImageUploader,
+    SettingsModal
+  },
+  data() {
+    return {
+      state,
+      defaultConfig,
+      iconName: '',
+      iconUrl: null,
+      showSettings: false
+    };
+  },
+  mounted() {
+    this.loadStyles();
+    initialize();
+    
+    // Add click outside listener
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  unmounted() {
+    // Remove click outside listener
+    document.removeEventListener('click', this.handleClickOutside);
+  },
+  methods: {
+    loadStyles() {
+      defaultConfig.fontStyles.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        document.head.appendChild(link);
+      });
     },
-    data() {
-      return {
-        state,
-        defaultConfig,
-        iconName: '',
-        iconUrl: null,
-      };
+    updatePreview,
+    saveWebp,
+    loadIcon() {
+      if (this.iconName) {
+        this.iconUrl = `https://api.iconify.design/${this.iconName}.svg`;
+        this.selectIcon();
+      } else {
+        this.iconUrl = null;
+        state.squareImageUrl = null;
+      }
     },
-    mounted() {
-      this.loadStyles();
-      initialize();
+    selectIcon() {
+      if (this.iconUrl) {
+        fetch(this.iconUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            const file = new File([blob], 'icon.svg', { type: 'image/svg+xml' });
+            state.squareImageUrl = URL.createObjectURL(file);
+            updatePreview('square', { target: { files: [file] } });
+          })
+          .catch(error => {
+            console.error('加载图标时出错:', error);
+            this.showSuccessPopup('加载图标时出错: ' + error.message, false);
+          });
+      }
     },
-    methods: {
-      loadStyles() {
-        defaultConfig.fontStyles.forEach(url => {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = url;
-          document.head.appendChild(link);
-        });
-      },
-      updateShadowPreset,
-      updatePreview,
-      saveWebp,
-      loadIcon() {
-        if (this.iconName) {
-          this.iconUrl = `https://api.iconify.design/${this.iconName}.svg`;
-          this.selectIcon();
-        } else {
-          this.iconUrl = null;
-          state.squareImageUrl = null;
-        }
-      },
-      selectIcon() {
-        if (this.iconUrl) {
-          fetch(this.iconUrl)
-            .then(response => response.blob())
-            .then(blob => {
-              const file = new File([blob], 'icon.svg', { type: 'image/svg+xml' });
-              state.squareImageUrl = URL.createObjectURL(file);
-              updatePreview('square', { target: { files: [file] } });
-            })
-            .catch(error => {
-              console.error('加载图标时出错:', error);
-              this.showSuccessPopup('加载图标时出错: ' + error.message, false);
-            });
-        }
-      },
-      drawSquareImage,
-      handleCanvasDrop(event) {
-        const file = event.dataTransfer.files[0];
-        if (!file || !file.type.startsWith('image/')) return;
-        
-        const canvas = event.target;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const centerRadius = 100;
-        
-        const distanceToCenter = Math.sqrt(
-          Math.pow(x - centerX, 2) + 
-          Math.pow(y - centerY, 2)
-        );
-        
-        if (distanceToCenter < centerRadius) {
-          this.updatePreview('square', { target: { files: [file] } });
-        } else {
-          this.updatePreview('bg', { target: { files: [file] } });
-        }
-      },
+    drawSquareImage,
+    handleCanvasDrop(event) {
+      const file = event.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      
+      const canvas = event.target;
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const centerRadius = 100;
+      
+      const distanceToCenter = Math.sqrt(
+        Math.pow(x - centerX, 2) + 
+        Math.pow(y - centerY, 2)
+      );
+      
+      if (distanceToCenter < centerRadius) {
+        this.updatePreview('square', { target: { files: [file] } });
+      } else {
+        this.updatePreview('bg', { target: { files: [file] } });
+      }
+    },
+    selectFont(fontValue) {
+      state.selectedFont = fontValue;
+      state.isFontMenuOpen = false;
+      this.updatePreview('font', { target: { value: fontValue } });
+    },
+    handleClickOutside(event) {
+      const dropdown = document.querySelector('.relative');
+      if (dropdown && !dropdown.contains(event.target)) {
+        state.isFontMenuOpen = false;
+      }
+    },
+    openSettings() {
+      this.showSettings = true;
     }
-  };
-  </script>
+  }
+};
+</script>
