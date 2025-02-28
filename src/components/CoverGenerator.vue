@@ -62,8 +62,8 @@
       </div>
 
       <!-- 背景模糊设置 -->
-      <div class="flex items-center gap-4 mb-3">
-        <div class="flex-[6] flex items-center gap-2">
+      <div class="flex flex-col sm:flex-row items-center gap-3 mb-3">
+        <div class="w-full sm:flex-[6] flex items-center gap-2">
           <label class="whitespace-nowrap" for="inputBgBlur">背景模糊</label>
           <input 
             type="range"
@@ -75,7 +75,7 @@
             class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
           >
         </div>
-        <div class="flex-[4] flex items-center gap-2">
+        <div class="w-full sm:flex-[4] flex items-center gap-2">
           <label class="whitespace-nowrap" for="inputBgColor">背景颜色</label>
           <input 
             type="color"
@@ -90,11 +90,11 @@
       <!-- 图标和阴影设置 -->
       <div 
         class="flex flex-col gap-3 overflow-hidden transition-all duration-300 ease-out"
-        :class="state.squareImageUrl ? 'mb-3 max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
+        :class="state.squareImageUrl ? 'mb-3 max-h-[300px] sm:max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
       >
         <!-- 图标控制 -->
-        <div class="flex gap-4">
-          <div class="flex-1 flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="w-full sm:flex-1 flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputSquareSize">图标大小</label>
             <input 
               type="range"
@@ -106,7 +106,7 @@
               class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             >
           </div>
-          <div class="flex-1 flex items-center gap-2">
+          <div class="w-full sm:flex-1 flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputRotation">图标旋转</label>
             <input 
               type="range"
@@ -121,8 +121,8 @@
         </div>
 
         <!-- 阴影控制 -->
-        <div class="flex gap-4">
-          <div class="flex-[6] flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="w-full sm:flex-[6] flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputShadowStrength">图标阴影大小</label>
             <input 
               type="range"
@@ -134,7 +134,7 @@
               class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             >
           </div>
-          <div class="flex-[4] flex items-center gap-2">
+          <div class="w-full sm:flex-[4] flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputShadowColor">图标阴影颜色</label>
             <input 
               type="color"
@@ -147,8 +147,8 @@
         </div>
 
         <!-- 图标背景控制 -->
-        <div class="flex gap-4">
-          <div class="flex-[6] flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="w-full sm:flex-[6] flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputIconBgSize">图标背景大小</label>
             <input 
               type="range"
@@ -160,7 +160,7 @@
               class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             >
           </div>
-          <div class="flex-[4] flex items-center gap-2">
+          <div class="w-full sm:flex-[4] flex items-center gap-2">
             <label class="whitespace-nowrap" for="inputIconColor">图标背景颜色</label>
             <input 
               type="color"
@@ -174,8 +174,8 @@
       </div>
 
       <!-- 文本设置 -->
-      <div class="flex gap-4 mb-3">
-        <div class="flex-1 flex items-center gap-2">
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <div class="w-full sm:flex-1 flex items-center gap-2">
           <label class="whitespace-nowrap" for="inputTextSize">标题大小</label>
           <input 
             type="range"
@@ -187,7 +187,7 @@
             class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
           >
         </div>
-        <div class="flex-1 flex items-center gap-2">
+        <div class="w-full sm:flex-1 flex items-center gap-2">
           <label class="whitespace-nowrap">字体</label>
           <div class="relative flex-1" @click.stop>
             <button
@@ -224,10 +224,10 @@
       </div>
 
       <!-- 行高和立体效果设置 -->
-      <div class="flex mb-3">
+      <div class="flex flex-col sm:flex-row mb-3">
         <div 
           class="flex items-center gap-2 overflow-hidden transition-all duration-300 ease-out"
-          :class="state.hasMultipleLines ? 'max-w-[300px] opacity-100 mr-4' : 'max-w-0 opacity-0 mr-0'"
+          :class="state.hasMultipleLines ? ['opacity-100 mb-3 sm:mb-0 sm:mr-4','w-full sm:w-[300px]'] : 'h-0 opacity-0 w-0'"
         >
           <label class="whitespace-nowrap" for="inputLineHeight">标题行高</label>
           <input 
@@ -267,7 +267,7 @@
       ></textarea>
 
       <!-- 水印设置 -->
-      <div class="flex items-center gap-4 mb-3">
+      <div class="flex items-center gap-3 mb-3">
         <input 
           type="text"
           id="inputWatermark"
@@ -278,7 +278,7 @@
       </div>
 
       <!-- 操作按钮 -->
-      <div class="flex gap-4">
+      <div class="flex gap-3">
         <button 
           @click="saveWebp"
           class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
