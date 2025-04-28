@@ -300,15 +300,36 @@
     </div>
 
     <!-- 画布预览 -->
-    <div class="w-full lg:flex-[2] overflow-hidden">
+    <div class="relative w-full lg:flex-[2] overflow-hidden">
       <canvas 
         id="canvasPreview" 
         width="1000" 
         height="500" 
-        @dragover.prevent 
+        @dragover.prevent="handleCanvasDragOver"
+        @dragleave.prevent="handleCanvasDragLeave"
         @drop.prevent="handleCanvasDrop" 
         class="w-full h-auto rounded-lg shadow-md"
       ></canvas>
+      <!-- 图标区高亮 -->
+      <div
+        v-if="dragHighlight === 'icon'"
+        class="pointer-events-none absolute left-1/2 top-1/2"
+        :style="{
+          width: '200px',
+          height: '200px',
+          transform: 'translate(-50%, -50%)',
+          border: '3px dashed #22c55e',
+          borderRadius: '24px',
+          boxSizing: 'border-box',
+          zIndex: 10
+        }"
+      ></div>
+      <!-- 背景区高亮 -->
+      <div
+        v-if="dragHighlight === 'bg'"
+        class="pointer-events-none absolute inset-0"
+        style="border: 3px dashed #22c55e; border-radius: 16px; box-sizing: border-box; z-index: 9;"
+      ></div>
     </div>
 
     <!-- 设置模态框 -->
@@ -335,7 +356,8 @@ export default {
       defaultConfig,
       iconName: '',
       iconUrl: null,
-      showSettings: false
+      showSettings: false,
+      dragHighlight: null
     };
   },
   mounted() {
@@ -385,29 +407,31 @@ export default {
       }
     },
     drawSquareImage,
-    handleCanvasDrop(event) {
-      const file = event.dataTransfer.files[0];
-      if (!file || !file.type.startsWith('image/')) return;
-      
+    getDropArea(event) {
       const canvas = event.target;
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       const centerRadius = 100;
-      
       const distanceToCenter = Math.sqrt(
-        Math.pow(x - centerX, 2) + 
-        Math.pow(y - centerY, 2)
+        Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
       );
-      
-      if (distanceToCenter < centerRadius) {
-        this.updatePreview('square', { target: { files: [file] } });
-      } else {
-        this.updatePreview('bg', { target: { files: [file] } });
-      }
+      return distanceToCenter < centerRadius ? 'icon' : 'bg';
+    },
+    handleCanvasDragOver(event) {
+      this.dragHighlight = this.getDropArea(event);
+    },
+    handleCanvasDragLeave() {
+      this.dragHighlight = null;
+    },
+    handleCanvasDrop(event) {
+      this.dragHighlight = null;
+      const file = event.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const area = this.getDropArea(event);
+      this.updatePreview(area === 'icon' ? 'square' : 'bg', { target: { files: [file] } });
     },
     selectFont(fontValue) {
       state.selectedFont = fontValue;
