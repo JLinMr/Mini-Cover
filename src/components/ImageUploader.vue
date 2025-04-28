@@ -1,7 +1,7 @@
 <template>
   <button v-if="uploadApiUrl" 
           @click="uploadImage"
-          class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
     获取外链
   </button>
   
