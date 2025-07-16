@@ -14,8 +14,8 @@
   <a href="https://vercel.com/new/clone?repository-url=https://github.com/JLinMr/Mini-Cover">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
-  <a href="https://edgeone.ai/pages/new?repository-url=https://github.com/JLinMr/Mini-Cover">
-    <img src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg" alt="EdgeOne Pages to deploy" />
+  <a href="https://edgeone.ai/pages/new?repository-url=https%3A%2F%2Fgithub.com%2FJLinMr%2FMini-Cover&output-directory=dist&install-command=npm%20install&build-command=npm%20run%20build" target="_blank" rel="noopener noreferrer">
+    <img src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg" alt="Deploy with EdgeOne Pages">
   </a>
   <a href="https://app.netlify.com/start/deploy?repository=https://github.com/JLinMr/Mini-Cover">
     <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
