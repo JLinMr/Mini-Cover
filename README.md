@@ -14,6 +14,9 @@
   <a href="https://vercel.com/new/clone?repository-url=https://github.com/JLinMr/Mini-Cover">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
+  <a href="https://edgeone.ai/pages/new?repository-url=https%3A%2F%2Fgithub.com%2FJLinMr%2FMini-Cover&output-directory=dist&install-command=npm%20install&build-command=npm%20run%20build" target="_blank" rel="noopener noreferrer">
+    <img src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg" alt="Deploy with EdgeOne Pages">
+  </a>
   <a href="https://app.netlify.com/start/deploy?repository=https://github.com/JLinMr/Mini-Cover">
     <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
   </a>
@@ -96,6 +99,14 @@ npm run build
 ```
 
 构建产物在 `dist` 目录下，可以直接部署到任何静态资源服务器上。
+
+## CDN赞助
+
+本项目 CDN 加速及安全防护由 Tencent EdgeOne 赞助：EdgeOne 提供长期有效的免费套餐，包含不限量的流量和请求，覆盖中国大陆节点，且无任何超额收费，感兴趣的朋友可以去 EdgeOne 官网获取
+<a href="https://edgeone.ai/zh?from=github" target="_blank">
+    最佳亚洲 CDN、Edge 和安全解决方案 - 腾讯 EdgeOne
+<img src="https://edgeone.ai/media/34fe3a45-492d-4ea4-ae5d-ea1087ca7b4b.png" width="500" height="100">
+</a>
 
 ## 📝 开源协议
 
