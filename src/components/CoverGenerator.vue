@@ -285,7 +285,6 @@
         >
           保存图片
         </button>
-        <ImageUploader canvas-id="canvasPreview" />
         <button 
           @click="openSettings"
           class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
@@ -342,12 +341,10 @@
 <script>
 import { state, updatePreview, saveWebp, drawSquareImage, initialize } from '../assets/script.js';
 import { defaultConfig } from '../config';
-import ImageUploader from './ImageUploader.vue';
 import SettingsModal from './SettingsModal.vue';
 
 export default {
   components: {
-    ImageUploader,
     SettingsModal
   },
   data() {
